@@ -140,7 +140,13 @@
                 datatype: "json",
                 success: function(data) {
                     console.log(data);
-                    var data = $.parseJSON(data);
+                    try {
+                        var data = $.parseJSON(data);
+                    }
+                    catch(err) {
+                        console.log("parse error");
+                        var data = data;
+                    }
 
                     var chart = c3.generate({
 
