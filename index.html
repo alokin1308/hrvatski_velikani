@@ -1,0 +1,181 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hrvatski Velikani</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Load c3.css -->
+    <link href="/c3/c3.css" rel="stylesheet" type="text/css">
+
+    <!-- Load d3.js and c3.js -->
+    <script src="/c3/d3.min.js" charset="utf-8"></script>
+    <script src="/c3/c3.min.js"></script>
+
+    <link rel="stylesheet" href="owl-carousel/owl.carousel.css">
+
+
+</head>
+
+<body>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    
+    
+
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Hrvatski Velikani Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Hrvatski Velikani</h1>
+            </div>
+        </div>
+        <!-- /.row -->
+
+     <!-- Owl Carousel Row -->
+        <div class="row">
+
+            <div class="col-md-8">
+                <div class="customNavigation">
+                    <a class="btn prev">Previous</a>
+                    <a class="btn next">Next</a>
+                </div>
+                
+                <div id="owl-carousel" class="owl-carousel"></div>
+
+            </div>
+
+            <div class="col-md-4">
+                <h3>Lista velikana:</h3>
+                    <div id="lista"></div>
+            </div>
+
+        </div>
+        <!-- /.row -->
+
+        <!-- c3.js graf Row -->
+        <div class="row">
+
+            <div class="col-xl-12">
+                <h3 class="page-header">Hrvatski Velikani - kavalirstvo</h3>
+            </div>
+
+            <div id="chart" class="col-xl-12"></div>
+
+        </div></div>
+        <!-- /.row -->
+
+
+
+    <!-- OWL CAROUSEL JS-->
+
+    <script type="text/javascript">
+       $(function () {
+              jQuery.ajax({
+                  url: "src/velikani_gallery.json",
+                  datatype: "json",
+                  success: function (data) {
+                      console.log(data);
+                      
+
+                       $(".owl-carousel").owlCarousel({
+
+    jsonPath : 'src/velikani_gallery1.json',
+    jsonSuccess : customDataSuccess,
+    items : 3
+    
+
+  });
+ 
+  function customDataSuccess(data){
+      
+    var content = "";
+    var imeVelikana = "";
+    for(var i in data["items"]){
+       
+       var img = data["items"][i].img;
+       var ime = data["items"][i].full_name;
+       var organizacija = data["items"][i].organizaton;
+       var owl = $("#owl-carousel");
+
+                            content += "<div class='owl-item'>" + "<img src='img/" + img + "' />" + "<div>" + "<h3>" + ime + "</div>" + "<div>" + "<h4>" + organizacija + "</div>" + "</div>"
+                            imeVelikana += "<li>" + ime
+                        }
+
+
+                        $(".owl-carousel").html(content);
+                        $("#lista").html(imeVelikana);
+
+                        // Next & Previous
+                        $(".next").click(function() {
+                            owl.trigger('owl.next');
+                        })
+                        $(".prev").click(function() {
+                            owl.trigger('owl.prev');
+                        })
+                    }
+
+                }
+            });
+        });
+    </script>
+
+   
+
+    <!-- C3.JS -->
+
+    <script type="text/javascript">
+        $(function() {
+            jQuery.ajax({
+                url: "src/velikani_chart.json",
+                datatype: "json",
+                success: function(data) {
+                    console.log(data);
+                    var data = $.parseJSON(data);
+
+                    var chart = c3.generate({
+
+
+                        data: {
+
+                            x: 'x',
+
+                            columns: [
+                                data[0],
+                                data[1],
+                            ],
+                            type: 'bar'
+                        },
+
+                        axis: {
+                            x: {
+                                type: 'category',
+                                height: 130
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+
+    <script src="owl-carousel/owl.carousel.min.js"></script>
+
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.js"></script>
+
+
+</body>
+
+</html>
